@@ -9,14 +9,18 @@
         {
             "location": "developer-notes/architecture/",
             "title": "Architecture",
-            "text": "<pre><code>---\ntitle: ZetsuBou architecture\n---\nclassDiagram\n    class Network {\n        port: 3000 (ZetsuBou)\n        port: 9000 (MinIO)\n    }\n    class ZetsuBou{\n        port: 3000\n    }\n    class Airflow{\n        port: 8080\n    }\n    class Elasticsearch{\n        port: 9200\n    }\n    class MinIO{\n        port: 9000\n        port: 9001\n    }\n    class PostgreSQL{\n        port: 5430\n    }\n    class Redis{\n        port: 6380\n    }\n    ZetsuBou &lt;|-- Airflow\n    ZetsuBou &lt;|-- Elasticsearch\n    ZetsuBou &lt;|-- MinIO\n    ZetsuBou &lt;|-- PostgreSQL\n    ZetsuBou &lt;|-- Redis\n    Airflow &lt;|-- Elasticsearch\n    Airflow &lt;|-- MinIO\n    Airflow &lt;|-- PostgreSQL\n    Airflow &lt;|-- Redis\n    Network &lt;|-- ZetsuBou\n    Network &lt;|-- MinIO</code></pre>"
+            "text": "<pre><code>---\ntitle: ZetsuBou architecture\n---\nclassDiagram\n    class Network {\n        port: 3000 (ZetsuBou)\n        port: 9000 (MinIO)\n    }\n    class ZetsuBou{\n        port: 3000\n    }\n    class Airflow{\n        port: 8080\n    }\n    class Elasticsearch{\n        port: 9200\n    }\n    class MinIO{\n        port: 9000\n        port: 9001\n    }\n    class PostgreSQL{\n        port: 5430\n    }\n    class Redis{\n        port: 6380\n    }\n    ZetsuBou &lt;|-- Airflow\n    ZetsuBou &lt;|-- Elasticsearch\n    ZetsuBou &lt;|-- MinIO\n    ZetsuBou &lt;|-- PostgreSQL\n    ZetsuBou &lt;|-- Redis\n    Airflow &lt;|-- Elasticsearch\n    Airflow &lt;|-- MinIO\n    Airflow &lt;|-- PostgreSQL\n    Airflow &lt;|-- Redis\n    Network &lt;|-- ZetsuBou\n    Network &lt;|-- MinIO</code></pre> Services Description Airflow Manage the tasks, e.g. synchronization, creating a video cover, and so on. Elasticsearch Search engine. MinIO An object storage for hosting images, videos, and files. PostgreSQL An object-relational database. Redis Maintain the status of tasks."
         },
         { "location": "developer-notes/environments/", "title": "Environments", "text": "" },
-        { "location": "developer-notes/environments/#set-environment", "title": "Set environment", "text": "" },
+        {
+            "location": "developer-notes/environments/#set-up-an-environment",
+            "title": "Set up an environment",
+            "text": ""
+        },
         {
             "location": "developer-notes/environments/#npm",
             "title": "NPM",
-            "text": "<p>We use commitlint and prettier to format the codes.</p> <pre><code># To install commitlint and prettier\nnpm install --save-dev @commitlint/{cli,config-conventional} conventional-changelog prettier prettier-eslint\n# To test commitlint\nnpx commitlint --from \"HEAD~1\" --to \"HEAD\" --verbose\n</code></pre>"
+            "text": "<p>We use commitlint and prettier to format the codes.</p> <pre><code># To install commitlint and prettier\nnpm install --also=dev\n# To test commitlint\nnpx commitlint --from \"HEAD~1\" --to \"HEAD\" --verbose\n</code></pre>"
         },
         {
             "location": "developer-notes/environments/#rust",
@@ -34,6 +38,16 @@
             "text": "<p>We use poetry to organize the Python packages .</p> <pre><code>poetry install\n</code></pre> <p>The pre-commit is used to hook the formatters and validators.</p> <pre><code>pre-commit install\n</code></pre>"
         },
         {
+            "location": "developer-notes/environments/#build-frontend",
+            "title": "Build frontend",
+            "text": "<pre><code>cd front\nnpm install --also=dev\nnpm run build\ncd ..\n</code></pre>"
+        },
+        {
+            "location": "developer-notes/environments/#build-documentation",
+            "title": "Build documentation",
+            "text": "<p>Create the static docs files in <code>./front/doc_site</code>.</p> <pre><code>make docs\n</code></pre>"
+        },
+        {
             "location": "developer-notes/environments/#run",
             "title": "Run",
             "text": "<p>Create the volumes under <code>./dev</code> relative to the current working directory, initialize the Airflow, and generate <code>./etc/settings.env</code> and <code>./etc/settings.airflow.env</code> settings files.</p> <pre><code>make init-example\n</code></pre> <p>Start the services with Docker containers except the ZetsuBou web application.</p> <pre><code>make up-dev\n</code></pre> <p>Run the ZetsuBou web application in Python CLI.</p> PythonWith Poetry <pre><code>python cli.py run\n</code></pre> <pre><code>poetry run python cli.py run\n</code></pre> <p>Or you can run <code>app.py</code> directly if you need to.</p> PythonWith Poetry <pre><code>python app.py\n</code></pre> <pre><code>poetry run python app.py\n</code></pre>"
@@ -41,31 +55,31 @@
         {
             "location": "developer-notes/environments/#run-before-you-push-the-codes",
             "title": "Run before you push the codes",
-            "text": "<pre><code>make lint\n</code></pre>"
+            "text": "<p>You should run the following command for every commit or you can run the commands manually.</p> MakefileManually <pre><code>make lint\n</code></pre> <pre><code># To format the files\npre-commit run --all-files\n# To check the commit format. This command checks only one commit. If you want to\n# check multiple commits, you can change the number in `HEAD~1`.\nnpx commitlint --from \"HEAD~1\" --to \"HEAD\" --verbose\n</code></pre>"
         },
         {
             "location": "developer-notes/environments/#recommended-vscode-extensions",
             "title": "Recommended VScode extensions",
             "text": "Extensions Description bradlc.vscode-tailwindcss For Tailwindcss autocomplete. ms-python.isort To automatically sort the Python import. redhat.vscode-yaml For yaml autocomplete, e.g. <code>mkdocs.yml</code>."
         },
-        { "location": "getting-started/example/", "title": "Start an example", "text": "" },
+        { "location": "getting-started/launch-an-example/", "title": "Launch an example", "text": "" },
         {
-            "location": "getting-started/example/#copy-the-files",
+            "location": "getting-started/launch-an-example/#copy-the-files",
             "title": "Copy the files",
             "text": "<p>Clone the project from github repository.</p> <pre><code>git clone https://github.com/ZetsuBouKyo/ZetsuBou\n</code></pre> <p>Or you can copy the following folder and files from the github repository.</p> <pre><code>docker\ndocker-compose.simple.yml\nMakefile\n</code></pre>"
         },
         {
-            "location": "getting-started/example/#build-the-docker-images",
+            "location": "getting-started/launch-an-example/#build-the-docker-images",
             "title": "Build the docker images",
             "text": "<pre><code>make build\n</code></pre> <p>This command will build <code>zetsubou/app:0.0.1-python-3.8.16-slim-buster</code> and <code>zetsubou/airflow:2.6.1-python3.8</code> docker images.</p>"
         },
         {
-            "location": "getting-started/example/#initialization",
+            "location": "getting-started/launch-an-example/#initialization",
             "title": "Initialization",
             "text": "<p>Create the volumes under <code>./dev</code> relative to the current working directory, initialize the Airflow, and generate <code>./etc/settings.env</code> and <code>./etc/settings.airflow.env</code> settings files.</p> <pre><code>make init-example\n</code></pre> <p>Shutdown the ZetsuBouou and Airflow docker containers.</p> <pre><code>make down\n</code></pre>"
         },
         {
-            "location": "getting-started/example/#start-the-services",
+            "location": "getting-started/launch-an-example/#start-the-services",
             "title": "Start the services",
             "text": "<pre><code># To start the services\nmake up\n</code></pre> <p>After <code>make up</code> command, you can find the username, password, and other information in <code>./etc/settings.env</code>. The default URL for the application is http://localhost:3000 .</p>"
         }

@@ -6,7 +6,7 @@
 
     <meta name="description" content="A self-hosted web application for your own image galleries and videos." />
 
-    <link rel="prev" href="../../getting-started/example/" />
+    <link rel="prev" href="../../getting-started/launch-an-example/" />
 
     <link rel="next" href="../environments/" />
 
@@ -197,7 +197,7 @@
             </li>
 
             <li class="md-tabs__item">
-              <a href="../../getting-started/example/" class="md-tabs__link"> Getting Started </a>
+              <a href="../../getting-started/launch-an-example/" class="md-tabs__link"> Getting Started </a>
             </li>
 
             <li class="md-tabs__item">
@@ -265,7 +265,9 @@
                         </label>
                         <ul class="md-nav__list" data-md-scrollfix>
                           <li class="md-nav__item">
-                            <a href="../../getting-started/example/" class="md-nav__link"> Example </a>
+                            <a href="../../getting-started/launch-an-example/" class="md-nav__link">
+                              Launch an example
+                            </a>
                           </li>
                         </ul>
                       </nav>
@@ -374,13 +376,43 @@ classDiagram
     Airflow &lt;|-- Redis
     Network &lt;|-- ZetsuBou
     Network &lt;|-- MinIO</code></pre>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Services</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Airflow</td>
+                    <td>Manage the tasks, e.g. synchronization, creating a video cover, and so on.</td>
+                  </tr>
+                  <tr>
+                    <td>Elasticsearch</td>
+                    <td>Search engine.</td>
+                  </tr>
+                  <tr>
+                    <td>MinIO</td>
+                    <td>An object storage for hosting images, videos, and files.</td>
+                  </tr>
+                  <tr>
+                    <td>PostgreSQL</td>
+                    <td>An object-relational database.</td>
+                  </tr>
+                  <tr>
+                    <td>Redis</td>
+                    <td>Maintain the status of tasks.</td>
+                  </tr>
+                </tbody>
+              </table>
 
               <hr />
               <div class="md-source-file">
                 <small>
                   Last update:
                   <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date"
-                    >August 8, 2023</span
+                    >August 12, 2023</span
                   >
                 </small>
               </div>
@@ -392,9 +424,9 @@ classDiagram
       <footer class="md-footer">
         <nav class="md-footer__inner md-grid" aria-label="Footer">
           <a
-            href="../../getting-started/example/"
+            href="../../getting-started/launch-an-example/"
             class="md-footer__link md-footer__link--prev"
-            aria-label="Previous: Example"
+            aria-label="Previous: Launch an example"
             rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -403,7 +435,7 @@ classDiagram
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction"> Previous </span>
-              <div class="md-ellipsis">Example</div>
+              <div class="md-ellipsis">Launch an example</div>
             </div>
           </a>
 
