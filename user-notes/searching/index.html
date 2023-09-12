@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <meta name="description" content="A self-hosted web application for your own image galleries and videos." />
+
+    <link rel="prev" href="../../getting-started/launch-an-example/" />
+
+    <link rel="next" href="../../developer-notes/architecture/" />
+
+    <link rel="icon" href="../../assets/favicon.ico" />
+    <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.8" />
+
+    <title>Searching - ZetsuBou</title>
+
+    <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css" />
+
+    <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css" />
+
+    <link rel="stylesheet" href="/docs/statics/termynal.css" />
+
+    <link rel="stylesheet" href="/docs/statics/custom.css" />
+
+    <script>
+      (__md_scope = new URL("../..", location)),
+        (__md_hash = (e) => [...e].reduce((e, _) => (e << 5) - e + _.charCodeAt(0), 0)),
+        (__md_get = (e, _ = localStorage, t = __md_scope) => JSON.parse(_.getItem(t.pathname + "." + e))),
+        (__md_set = (e, _, t = localStorage, a = __md_scope) => {
+          try {
+            t.setItem(a.pathname + "." + e, JSON.stringify(_));
+          } catch (e) {}
+        });
+    </script>
+  </head>
+
+  <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <script>
+      var palette = __md_get("__palette");
+      if (palette && "object" == typeof palette.color)
+        for (var key of Object.keys(palette.color))
+          document.body.setAttribute("data-md-color-" + key, palette.color[key]);
+    </script>
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off" />
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off" />
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      <a href="#introduction" class="md-skip"> Skip to content </a>
+    </div>
+    <div data-md-component="announce"></div>
+
+    <header class="md-header" data-md-component="header">
+      <nav class="md-header__inner md-grid" aria-label="Header">
+        <a
+          href="../.."
+          title="ZetsuBou"
+          class="md-header__button md-logo"
+          aria-label="ZetsuBou"
+          data-md-component="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z" />
+          </svg>
+        </a>
+        <label class="md-header__button md-icon" for="__drawer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z" />
+          </svg>
+        </label>
+        <div class="md-header__title" data-md-component="header-title">
+          <div class="md-header__ellipsis">
+            <div class="md-header__topic">
+              <span class="md-ellipsis"> ZetsuBou </span>
+            </div>
+            <div class="md-header__topic" data-md-component="header-topic">
+              <span class="md-ellipsis"> Searching </span>
+            </div>
+          </div>
+        </div>
+
+        <form class="md-header__option" data-md-component="palette">
+          <input
+            class="md-option"
+            data-md-color-media="(prefers-color-scheme: light)"
+            data-md-color-scheme="default"
+            data-md-color-primary="indigo"
+            data-md-color-accent="indigo"
+            aria-label="Switch to dark mode"
+            type="radio"
+            name="__palette"
+            id="__palette_1" />
+
+          <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z" />
+            </svg>
+          </label>
+
+          <input
+            class="md-option"
+            data-md-color-media="(prefers-color-scheme: dark)"
+            data-md-color-scheme="slate"
+            data-md-color-primary="indigo"
+            data-md-color-accent="indigo"
+            aria-label="Switch to light mode"
+            type="radio"
+            name="__palette"
+            id="__palette_2" />
+
+          <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z" />
+            </svg>
+          </label>
+        </form>
+
+        <label class="md-header__button md-icon" for="__search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z" />
+          </svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+          <label class="md-search__overlay" for="__search"></label>
+          <div class="md-search__inner" role="search">
+            <form class="md-search__form" name="search">
+              <input
+                type="text"
+                class="md-search__input"
+                name="query"
+                aria-label="Search"
+                placeholder="Search"
+                autocapitalize="off"
+                autocorrect="off"
+                autocomplete="off"
+                spellcheck="false"
+                data-md-component="search-query"
+                required />
+              <label class="md-search__icon md-icon" for="__search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z" />
+                </svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z" />
+                </svg>
+              </label>
+              <nav class="md-search__options" aria-label="Search">
+                <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                      d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                  </svg>
+                </button>
+              </nav>
+            </form>
+            <div class="md-search__output">
+              <div class="md-search__scrollwrap" data-md-scrollfix>
+                <div class="md-search-result" data-md-component="search-result">
+                  <div class="md-search-result__meta">Initializing search</div>
+                  <ol class="md-search-result__list" role="presentation"></ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="md-header__source">
+          <a
+            href="https://github.com/ZetsuBouKyo/ZetsuBou"
+            title="Go to repository"
+            class="md-source"
+            data-md-component="source">
+            <div class="md-source__icon md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.-->
+                <path
+                  d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z" />
+              </svg>
+            </div>
+            <div class="md-source__repository">ZetsuBouKyo/ZetsuBou</div>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="md-container" data-md-component="container">
+      <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+        <div class="md-grid">
+          <ul class="md-tabs__list">
+            <li class="md-tabs__item">
+              <a href="../.." class="md-tabs__link"> Welcome </a>
+            </li>
+
+            <li class="md-tabs__item">
+              <a href="../../getting-started/launch-an-example/" class="md-tabs__link"> Getting Started </a>
+            </li>
+
+            <li class="md-tabs__item md-tabs__item--active">
+              <a href="./" class="md-tabs__link"> User Notes </a>
+            </li>
+
+            <li class="md-tabs__item">
+              <a href="../../developer-notes/architecture/" class="md-tabs__link"> Developer Notes </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+                  <label class="md-nav__title" for="__drawer">
+                    <a
+                      href="../.."
+                      title="ZetsuBou"
+                      class="md-nav__button md-logo"
+                      aria-label="ZetsuBou"
+                      data-md-component="logo">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                          d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z" />
+                      </svg>
+                    </a>
+                    ZetsuBou
+                  </label>
+
+                  <div class="md-nav__source">
+                    <a
+                      href="https://github.com/ZetsuBouKyo/ZetsuBou"
+                      title="Go to repository"
+                      class="md-source"
+                      data-md-component="source">
+                      <div class="md-source__icon md-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.-->
+                          <path
+                            d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z" />
+                        </svg>
+                      </div>
+                      <div class="md-source__repository">ZetsuBouKyo/ZetsuBou</div>
+                    </a>
+                  </div>
+
+                  <ul class="md-nav__list" data-md-scrollfix>
+                    <li class="md-nav__item">
+                      <a href="../.." class="md-nav__link">
+                        <span class="md-ellipsis"> Welcome </span>
+                      </a>
+                    </li>
+
+                    <li class="md-nav__item md-nav__item--nested">
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2" />
+
+                      <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+                        <span class="md-ellipsis"> Getting Started </span>
+
+                        <span class="md-nav__icon md-icon"></span>
+                      </label>
+
+                      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+                        <label class="md-nav__title" for="__nav_2">
+                          <span class="md-nav__icon md-icon"></span>
+                          Getting Started
+                        </label>
+                        <ul class="md-nav__list" data-md-scrollfix>
+                          <li class="md-nav__item">
+                            <a href="../../getting-started/launch-an-example/" class="md-nav__link">
+                              <span class="md-ellipsis"> Launch an example </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </li>
+
+                    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_3" checked />
+
+                      <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+                        <span class="md-ellipsis"> User Notes </span>
+
+                        <span class="md-nav__icon md-icon"></span>
+                      </label>
+
+                      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+                        <label class="md-nav__title" for="__nav_3">
+                          <span class="md-nav__icon md-icon"></span>
+                          User Notes
+                        </label>
+                        <ul class="md-nav__list" data-md-scrollfix>
+                          <li class="md-nav__item md-nav__item--active">
+                            <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc" />
+
+                            <label class="md-nav__link md-nav__link--active" for="__toc">
+                              <span class="md-ellipsis"> Searching </span>
+
+                              <span class="md-nav__icon md-icon"></span>
+                            </label>
+
+                            <a href="./" class="md-nav__link md-nav__link--active">
+                              <span class="md-ellipsis"> Searching </span>
+                            </a>
+
+                            <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                              <label class="md-nav__title" for="__toc">
+                                <span class="md-nav__icon md-icon"></span>
+                                Table of contents
+                              </label>
+                              <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+                                <li class="md-nav__item">
+                                  <a href="#normal-search" class="md-nav__link"> Normal search </a>
+
+                                  <nav class="md-nav" aria-label="Normal search">
+                                    <ul class="md-nav__list">
+                                      <li class="md-nav__item">
+                                        <a href="#grammar" class="md-nav__link"> Grammar </a>
+
+                                        <nav class="md-nav" aria-label="Grammar">
+                                          <ul class="md-nav__list">
+                                            <li class="md-nav__item">
+                                              <a href="#special-character" class="md-nav__link"> Special character </a>
+                                            </li>
+
+                                            <li class="md-nav__item">
+                                              <a href="#examples" class="md-nav__link"> Examples </a>
+                                            </li>
+                                          </ul>
+                                        </nav>
+                                      </li>
+                                    </ul>
+                                  </nav>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#with-additional-parameters" class="md-nav__link">
+                                    With additional parameters
+                                  </a>
+
+                                  <nav class="md-nav" aria-label="With additional parameters">
+                                    <ul class="md-nav__list">
+                                      <li class="md-nav__item">
+                                        <a href="#additional-parameters" class="md-nav__link">
+                                          Additional parameters
+                                        </a>
+
+                                        <nav class="md-nav" aria-label="Additional parameters">
+                                          <ul class="md-nav__list">
+                                            <li class="md-nav__item">
+                                              <a href="#base" class="md-nav__link"> Base </a>
+                                            </li>
+
+                                            <li class="md-nav__item">
+                                              <a href="#analyzer" class="md-nav__link"> Analyzer </a>
+                                            </li>
+
+                                            <li class="md-nav__item">
+                                              <a href="#fuzziness" class="md-nav__link"> Fuzziness </a>
+                                            </li>
+
+                                            <li class="md-nav__item">
+                                              <a href="#boolean" class="md-nav__link"> Boolean </a>
+                                            </li>
+
+                                            <li class="md-nav__item">
+                                              <a href="#custom" class="md-nav__link"> Custom </a>
+                                            </li>
+                                          </ul>
+                                        </nav>
+                                      </li>
+                                    </ul>
+                                  </nav>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#advanced-search" class="md-nav__link"> Advanced search </a>
+                                </li>
+                              </ul>
+                            </nav>
+                          </li>
+                        </ul>
+                      </nav>
+                    </li>
+
+                    <li class="md-nav__item md-nav__item--nested">
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_4" />
+
+                      <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+                        <span class="md-ellipsis"> Developer Notes </span>
+
+                        <span class="md-nav__icon md-icon"></span>
+                      </label>
+
+                      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+                        <label class="md-nav__title" for="__nav_4">
+                          <span class="md-nav__icon md-icon"></span>
+                          Developer Notes
+                        </label>
+                        <ul class="md-nav__list" data-md-scrollfix>
+                          <li class="md-nav__item">
+                            <a href="../../developer-notes/architecture/" class="md-nav__link">
+                              <span class="md-ellipsis"> Architecture </span>
+                            </a>
+                          </li>
+
+                          <li class="md-nav__item">
+                            <a href="../../developer-notes/environments/" class="md-nav__link">
+                              <span class="md-ellipsis"> Environments </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+                  <label class="md-nav__title" for="__toc">
+                    <span class="md-nav__icon md-icon"></span>
+                    Table of contents
+                  </label>
+                  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+                    <li class="md-nav__item">
+                      <a href="#normal-search" class="md-nav__link"> Normal search </a>
+
+                      <nav class="md-nav" aria-label="Normal search">
+                        <ul class="md-nav__list">
+                          <li class="md-nav__item">
+                            <a href="#grammar" class="md-nav__link"> Grammar </a>
+
+                            <nav class="md-nav" aria-label="Grammar">
+                              <ul class="md-nav__list">
+                                <li class="md-nav__item">
+                                  <a href="#special-character" class="md-nav__link"> Special character </a>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#examples" class="md-nav__link"> Examples </a>
+                                </li>
+                              </ul>
+                            </nav>
+                          </li>
+                        </ul>
+                      </nav>
+                    </li>
+
+                    <li class="md-nav__item">
+                      <a href="#with-additional-parameters" class="md-nav__link"> With additional parameters </a>
+
+                      <nav class="md-nav" aria-label="With additional parameters">
+                        <ul class="md-nav__list">
+                          <li class="md-nav__item">
+                            <a href="#additional-parameters" class="md-nav__link"> Additional parameters </a>
+
+                            <nav class="md-nav" aria-label="Additional parameters">
+                              <ul class="md-nav__list">
+                                <li class="md-nav__item">
+                                  <a href="#base" class="md-nav__link"> Base </a>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#analyzer" class="md-nav__link"> Analyzer </a>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#fuzziness" class="md-nav__link"> Fuzziness </a>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#boolean" class="md-nav__link"> Boolean </a>
+                                </li>
+
+                                <li class="md-nav__item">
+                                  <a href="#custom" class="md-nav__link"> Custom </a>
+                                </li>
+                              </ul>
+                            </nav>
+                          </li>
+                        </ul>
+                      </nav>
+                    </li>
+
+                    <li class="md-nav__item">
+                      <a href="#advanced-search" class="md-nav__link"> Advanced search </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              <a
+                href="https://github.com/ZetsuBouKyo/ZetsuBou/edit/master/docs/user-notes/searching.md"
+                title="Edit this page"
+                class="md-content__button md-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z" />
+                </svg>
+              </a>
+
+              <a
+                href="https://github.com/ZetsuBouKyo/ZetsuBou/raw/master/docs/user-notes/searching.md"
+                title="View source of this page"
+                class="md-content__button md-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z" />
+                </svg>
+              </a>
+
+              <h1 id="introduction">
+                Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a>
+              </h1>
+              <p>
+                Our search mechanism is based on Elasticsearch. We store the gallery, video, and tag information in JSON
+                format.
+              </p>
+              <p>There are 3 ways to search the content in the Web UI.</p>
+              <ul>
+                <li><a href="#normal-search">Search in the top input element of the navigation.</a></li>
+                <li>
+                  <a href="#with-additional-parameters"
+                    >Search in the top input element of the navigation with additional parameters.</a
+                  >
+                </li>
+                <li><a href="#advanced-search">Advanced search.</a></li>
+              </ul>
+              <h2 id="normal-search">
+                Normal search<a class="headerlink" href="#normal-search" title="Permanent link">&para;</a>
+              </h2>
+              <p>
+                The HTML input element in the top navigation is the entry point for the text search. It supports some
+                special search grammar, e.g. including or excluding field value under specific field name.
+              </p>
+              <details class="note">
+                <summary>Field name and field value</summary>
+                <p>For example, we have a JSON file:</p>
+                <div class="language-json highlight">
+                  <pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="err">...</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="nt">&quot;langauge&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Chinese&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;English&quot;</span><span class="p">]</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="err">...</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+</span></code></pre>
+                </div>
+                <p>
+                  <code>tags</code> is the field name. <code>Chinese</code> or <code>English</code> is the field value.
+                </p>
+              </details>
+              <details class="note">
+                <summary>Web screenshot</summary>
+                <p><img alt="Alt Text" src="../../assets/user-notes/searching/search-1.png" /></p>
+              </details>
+              <h3 id="grammar">Grammar<a class="headerlink" href="#grammar" title="Permanent link">&para;</a></h3>
+              <h4 id="special-character">
+                Special character<a class="headerlink" href="#special-character" title="Permanent link">&para;</a>
+              </h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Operator</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>-</code></td>
+                    <td>Exclude for field name or field value under specific field name.</td>
+                  </tr>
+                  <tr>
+                    <td><code>"</code></td>
+                    <td>
+                      Everything between the quotes after the <code>=</code> character is treated as a field value.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>=</code></td>
+                    <td>Separator for field name and field value.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h4 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h4>
+              <details class="note">
+                <summary>Developer notes</summary>
+                <p>This section is generated by <code>python cli.py build docs print-search-grammar-examples</code>.</p>
+              </details>
+              <ul>
+                <li>Excludes all documents that have a <code>tags.language</code> field.</li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="1:2">
+                <input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input
+                  id="__tabbed_1_2"
+                  name="__tabbed_1"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_1_1">Input</label><label for="__tabbed_1_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>-tags.language
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">                </span><span class="nt">&quot;exists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">                    </span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tags.language&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="p">]</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  Excludes documents that have an <code>english</code> value in a <code>tags.language</code> field.
+                </li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="2:2">
+                <input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input
+                  id="__tabbed_2_2"
+                  name="__tabbed_2"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_2_1">Input</label><label for="__tabbed_2_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>-tags.language<span class="o">=</span>english
+</span></code></pre>
+                    </div>
+                    <p>or</p>
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>-tags.language<span class="o">=</span><span class="s2">&quot;english&quot;</span>
+</span></code></pre>
+                    </div>
+                    <p>or</p>
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>-<span class="s2">&quot;tags.language&quot;</span><span class="o">=</span>english
+</span></code></pre>
+                    </div>
+                    <p>or</p>
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>-<span class="s2">&quot;tags.language&quot;</span><span class="o">=</span><span class="s2">&quot;english&quot;</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">                </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">                    </span><span class="nt">&quot;tags.language.keyword&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">                        </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;english&quot;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="p">]</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul>
+                <li>Includes documents that have a <code>中文</code> value in a <code>tags.language</code> field.</li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="3:2">
+                <input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input
+                  id="__tabbed_3_2"
+                  name="__tabbed_3"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_3_1">Input</label><label for="__tabbed_3_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>tags.language<span class="o">=</span>中文
+</span></code></pre>
+                    </div>
+                    <p>or</p>
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>tags.language<span class="o">=</span><span class="s2">&quot;中文&quot;</span>
+</span></code></pre>
+                    </div>
+                    <p>or</p>
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="s2">&quot;tags.language&quot;</span><span class="o">=</span>中文
+</span></code></pre>
+                    </div>
+                    <p>or</p>
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="s2">&quot;tags.language&quot;</span><span class="o">=</span><span class="s2">&quot;中文&quot;</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;中文&quot;</span><span class="p">,</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tags.language.*&quot;</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul>
+                <li>Includes documents that have a <code>=中文</code> value in a <code>tags.language</code> field.</li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="4:2">
+                <input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input
+                  id="__tabbed_4_2"
+                  name="__tabbed_4"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_4_1">Input</label><label for="__tabbed_4_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>tags.language<span class="o">==</span>中文
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;=中文&quot;</span><span class="p">,</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tags.language.*&quot;</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  Includes documents that have a <code>=中=文=</code> value in a <code>tags.language</code> field.
+                </li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="5:2">
+                <input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input
+                  id="__tabbed_5_2"
+                  name="__tabbed_5"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_5_1">Input</label><label for="__tabbed_5_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>tags.language<span class="o">==</span><span class="nv">中</span><span class="o">=</span><span class="nv">文</span><span class="o">=</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;=中=文=&quot;</span><span class="p">,</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tags.language.*&quot;</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  Includes documents that have an <code>English (UK)</code> value in a <code>tags.language</code> field.
+                </li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="6:2">
+                <input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input
+                  id="__tabbed_6_2"
+                  name="__tabbed_6"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_6_1">Input</label><label for="__tabbed_6_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>tags.language<span class="o">=</span><span class="s2">&quot;English (UK)&quot;</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;English (UK)&quot;</span><span class="p">,</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tags.language.*&quot;</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul>
+                <li>If there is an odd number of quotes, it is treated as a normal keyword string.</li>
+              </ul>
+              <div class="tabbed-set tabbed-alternate" data-tabs="7:2">
+                <input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input
+                  id="__tabbed_7_2"
+                  name="__tabbed_7"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_7_1">Input</label><label for="__tabbed_7_2">Elasticsearch</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <div class="language-sh highlight">
+                      <pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="s2">&quot;[&quot;</span>社會<span class="s2">&quot; (歷史)] 今天天氣真好=(三國演義) [Chn]</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                  <div class="tabbed-block">
+                    <div class="language-json highlight">
+                      <pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span><span class="nt">&quot;bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">        </span><span class="nt">&quot;should&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\&quot;[\&quot;社會\&quot;&quot;</span><span class="p">,</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">                                </span><span class="s2">&quot;tags.*&quot;</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">                            </span><span class="p">]</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">            </span><span class="p">},</span>
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(歷史)]&quot;</span><span class="p">,</span>
+</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="w">                                </span><span class="s2">&quot;tags.*&quot;</span>
+</span><span id="__span-20-25"><a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">                            </span><span class="p">]</span>
+</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-20-27"><a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-20-28"><a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-20-29"><a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a><span class="w">            </span><span class="p">},</span>
+</span><span id="__span-20-30"><a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-20-31"><a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-32"><a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-33"><a id="__codelineno-20-33" name="__codelineno-20-33" href="#__codelineno-20-33"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-34"><a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;今天天氣真好=(三國演義)&quot;</span><span class="p">,</span>
+</span><span id="__span-20-35"><a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-20-36"><a id="__codelineno-20-36" name="__codelineno-20-36" href="#__codelineno-20-36"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-20-37"><a id="__codelineno-20-37" name="__codelineno-20-37" href="#__codelineno-20-37"></a><span class="w">                                </span><span class="s2">&quot;tags.*&quot;</span>
+</span><span id="__span-20-38"><a id="__codelineno-20-38" name="__codelineno-20-38" href="#__codelineno-20-38"></a><span class="w">                            </span><span class="p">]</span>
+</span><span id="__span-20-39"><a id="__codelineno-20-39" name="__codelineno-20-39" href="#__codelineno-20-39"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-20-40"><a id="__codelineno-20-40" name="__codelineno-20-40" href="#__codelineno-20-40"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-20-41"><a id="__codelineno-20-41" name="__codelineno-20-41" href="#__codelineno-20-41"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-20-42"><a id="__codelineno-20-42" name="__codelineno-20-42" href="#__codelineno-20-42"></a><span class="w">            </span><span class="p">},</span>
+</span><span id="__span-20-43"><a id="__codelineno-20-43" name="__codelineno-20-43" href="#__codelineno-20-43"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-20-44"><a id="__codelineno-20-44" name="__codelineno-20-44" href="#__codelineno-20-44"></a><span class="w">                </span><span class="nt">&quot;constant_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-45"><a id="__codelineno-20-45" name="__codelineno-20-45" href="#__codelineno-20-45"></a><span class="w">                    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-46"><a id="__codelineno-20-46" name="__codelineno-20-46" href="#__codelineno-20-46"></a><span class="w">                        </span><span class="nt">&quot;multi_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-47"><a id="__codelineno-20-47" name="__codelineno-20-47" href="#__codelineno-20-47"></a><span class="w">                            </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[Chn]&quot;</span><span class="p">,</span>
+</span><span id="__span-20-48"><a id="__codelineno-20-48" name="__codelineno-20-48" href="#__codelineno-20-48"></a><span class="w">                            </span><span class="nt">&quot;fuzziness&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-20-49"><a id="__codelineno-20-49" name="__codelineno-20-49" href="#__codelineno-20-49"></a><span class="w">                            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-20-50"><a id="__codelineno-20-50" name="__codelineno-20-50" href="#__codelineno-20-50"></a><span class="w">                                </span><span class="s2">&quot;tags.*&quot;</span>
+</span><span id="__span-20-51"><a id="__codelineno-20-51" name="__codelineno-20-51" href="#__codelineno-20-51"></a><span class="w">                            </span><span class="p">]</span>
+</span><span id="__span-20-52"><a id="__codelineno-20-52" name="__codelineno-20-52" href="#__codelineno-20-52"></a><span class="w">                        </span><span class="p">}</span>
+</span><span id="__span-20-53"><a id="__codelineno-20-53" name="__codelineno-20-53" href="#__codelineno-20-53"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-20-54"><a id="__codelineno-20-54" name="__codelineno-20-54" href="#__codelineno-20-54"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-20-55"><a id="__codelineno-20-55" name="__codelineno-20-55" href="#__codelineno-20-55"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-20-56"><a id="__codelineno-20-56" name="__codelineno-20-56" href="#__codelineno-20-56"></a><span class="w">        </span><span class="p">],</span>
+</span><span id="__span-20-57"><a id="__codelineno-20-57" name="__codelineno-20-57" href="#__codelineno-20-57"></a><span class="w">        </span><span class="nt">&quot;must_not&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-20-58"><a id="__codelineno-20-58" name="__codelineno-20-58" href="#__codelineno-20-58"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-20-59"><a id="__codelineno-20-59" name="__codelineno-20-59" href="#__codelineno-20-59"></a><span class="p">}</span>
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <h2 id="with-additional-parameters">
+                With additional parameters<a
+                  class="headerlink"
+                  href="#with-additional-parameters"
+                  title="Permanent link"
+                  >&para;</a
+                >
+              </h2>
+              <p>
+                At the end of the top input navigation, near the magnifier icon, there is a rounded-expand-more icon.
+                Click on the rounded-expand-more icon to expand the dropdown.
+              </p>
+              <details class="note">
+                <summary>Web screenshot</summary>
+                <p><img alt="Alt Text" src="../../assets/user-notes/searching/search-2.png" /></p>
+              </details>
+              <p>Here are the parameters.</p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="#base">Base</a></td>
+                    <td>The order of returning results.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#analyzer">Analyzer</a></td>
+                    <td>The algorithm used to convert the text into tokens.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#fuzziness">Fuzziness</a></td>
+                    <td>
+                      Fuzziness<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> of the text search.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="#boolean">Boolean</a></td>
+                    <td>The relationship between keywords.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#custom">Custom</a></td>
+                    <td>The custom Elasticsearch query.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="additional-parameters">
+                Additional parameters<a class="headerlink" href="#additional-parameters" title="Permanent link"
+                  >&para;</a
+                >
+              </h3>
+              <h4 id="base">Base<a class="headerlink" href="#base" title="Permanent link">&para;</a></h4>
+              <p>
+                <code>Search</code> performs the default search which will split the input text with space and searches
+                that splitted keywords in mutiple fields.
+              </p>
+              <p><code>Random</code> will return the same results as Search, but they will be returned randomly.</p>
+              <h4 id="analyzer">Analyzer<a class="headerlink" href="#analyzer" title="Permanent link">&para;</a></h4>
+              <p>
+                The word <code>Analyzer</code> has two meanings in ZetsuBou. One is the
+                <code>Elasticsearch Analyzer</code> and the other is the <code>Web Search Analyzer</code>.
+              </p>
+              <p>
+                <code>Elasticsearch Analyzer</code> is a field name of the form <code>*.&lt;analyzer&gt;</code>. For
+                example, <code>raw_name.default</code> means field name <code>raw_name</code> and analyzer
+                <code>default</code>.
+              </p>
+              <p>
+                <code>Web Search Analyzer</code> is a dropdown list in the Web UI. It is a combination of the
+                <code>Elasticsearch Analyzer</code>.
+              </p>
+              <details class="note">
+                <summary>Developer notes</summary>
+                <p>
+                  You can see the following tabs in JSON format by
+                  <code>python cli.py build docs print-web-search-analyzer</code>.
+                </p>
+              </details>
+              <p>The following two tabs are the details of <code>Web Search Analyzer</code>.</p>
+              <div class="tabbed-set tabbed-alternate" data-tabs="8:2">
+                <input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input
+                  id="__tabbed_8_2"
+                  name="__tabbed_8"
+                  type="radio" />
+                <div class="tabbed-labels">
+                  <label for="__tabbed_8_1">Gallery</label><label for="__tabbed_8_2">Video</label>
+                </div>
+                <div class="tabbed-content">
+                  <div class="tabbed-block">
+                    <p>Default</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.url</td>
+                          <td>path</td>
+                          <td>url</td>
+                        </tr>
+                        <tr>
+                          <td>name.default</td>
+                          <td>name</td>
+                          <td>default</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.default</td>
+                          <td>raw_name</td>
+                          <td>default</td>
+                        </tr>
+                        <tr>
+                          <td>src.url</td>
+                          <td>src</td>
+                          <td>url</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Keyword</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.keyword</td>
+                          <td>path</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>name.keyword</td>
+                          <td>name</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.keyword</td>
+                          <td>raw_name</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>src.keyword</td>
+                          <td>src</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Ngram</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.ngram</td>
+                          <td>path</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>name.ngram</td>
+                          <td>name</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.ngram</td>
+                          <td>raw_name</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>src.ngram</td>
+                          <td>src</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Standard</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.standard</td>
+                          <td>path</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>name.standard</td>
+                          <td>name</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.standard</td>
+                          <td>raw_name</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>src.standard</td>
+                          <td>src</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>URL</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.url</td>
+                          <td>path</td>
+                          <td>url</td>
+                        </tr>
+                        <tr>
+                          <td>src.url</td>
+                          <td>src</td>
+                          <td>url</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="tabbed-block">
+                    <p>Default</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.url</td>
+                          <td>path</td>
+                          <td>url</td>
+                        </tr>
+                        <tr>
+                          <td>name.default</td>
+                          <td>name</td>
+                          <td>default</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.default</td>
+                          <td>raw_name</td>
+                          <td>default</td>
+                        </tr>
+                        <tr>
+                          <td>src.url</td>
+                          <td>src</td>
+                          <td>url</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Keyword</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.keyword</td>
+                          <td>path</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>name.keyword</td>
+                          <td>name</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.keyword</td>
+                          <td>raw_name</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>src.keyword</td>
+                          <td>src</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Ngram</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.ngram</td>
+                          <td>path</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>name.ngram</td>
+                          <td>name</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.ngram</td>
+                          <td>raw_name</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>src.ngram</td>
+                          <td>src</td>
+                          <td>ngram</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>Standard</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.standard</td>
+                          <td>path</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>name.standard</td>
+                          <td>name</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>raw_name.standard</td>
+                          <td>raw_name</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>src.standard</td>
+                          <td>src</td>
+                          <td>standard</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.category</td>
+                          <td>attributes.category</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>attributes.uploader</td>
+                          <td>attributes.uploader</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>labels</td>
+                          <td>labels</td>
+                          <td>keyword</td>
+                        </tr>
+                        <tr>
+                          <td>tags.*</td>
+                          <td>tags.*</td>
+                          <td>keyword</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>URL</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Full field name</th>
+                          <th>Field name</th>
+                          <th>Elasticsearch analyzer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>path.url</td>
+                          <td>path</td>
+                          <td>url</td>
+                        </tr>
+                        <tr>
+                          <td>src.url</td>
+                          <td>src</td>
+                          <td>url</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <h4 id="fuzziness">Fuzziness<a class="headerlink" href="#fuzziness" title="Permanent link">&para;</a></h4>
+              <p>The fuzziness value represents the minimum steps from one text sequence to another.^[2]</p>
+              <h4 id="boolean">Boolean<a class="headerlink" href="#boolean" title="Permanent link">&para;</a></h4>
+              <p>
+                The default value is <code>Should</code>, which means it will return the results that match any of the
+                keywords under any of the field names.
+              </p>
+              <p><code>Must</code> means that all tokens must be hit.</p>
+              <h4 id="custom">Custom<a class="headerlink" href="#custom" title="Permanent link">&para;</a></h4>
+              <p>
+                Users can create their own Elasticsearch query at
+                <code>http://localhost:3000/settings/elasticsearch-search</code>.
+              </p>
+              <details class="note">
+                <summary>Web screenshot</summary>
+                <p>
+                  <img
+                    alt="Alt Text"
+                    src="../../assets/user-notes/searching/search-with-additional-parameters-custom-1.png" />
+                </p>
+              </details>
+              <hr />
+              <h2 id="advanced-search">
+                Advanced search<a class="headerlink" href="#advanced-search" title="Permanent link">&para;</a>
+              </h2>
+              <p>Similar to searching with additional parameters, but more detailed.</p>
+              <details class="note">
+                <summary>Web screenshot</summary>
+                <p>
+                  <img alt="Alt Text" src="../../assets/user-notes/searching/search-3-1.png" />
+                  <img alt="Alt Text" src="../../assets/user-notes/searching/search-3-2.png" />
+                </p>
+              </details>
+              <div class="footnote">
+                <hr />
+                <ol>
+                  <li id="fn:1">
+                    <p>
+                      <a
+                        href="https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#fuzziness"
+                        >https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#fuzziness</a
+                      >&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"
+                        >&#8617;</a
+                      >
+                    </p>
+                  </li>
+                  <li id="fn:2">
+                    <p>
+                      <a href="https://en.wikipedia.org/wiki/Levenshtein_distance"
+                        >https://en.wikipedia.org/wiki/Levenshtein_distance</a
+                      >
+                      ↩&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"
+                        >&#8617;</a
+                      >
+                    </p>
+                  </li>
+                </ol>
+              </div>
+
+              <hr />
+              <div class="md-source-file">
+                <small>
+                  Last update:
+                  <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date"
+                    >September 12, 2023</span
+                  >
+                </small>
+              </div>
+            </article>
+          </div>
+        </div>
+      </main>
+
+      <footer class="md-footer">
+        <nav class="md-footer__inner md-grid" aria-label="Footer">
+          <a
+            href="../../getting-started/launch-an-example/"
+            class="md-footer__link md-footer__link--prev"
+            aria-label="Previous: Launch an example"
+            rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z" />
+              </svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction"> Previous </span>
+              <div class="md-ellipsis">Launch an example</div>
+            </div>
+          </a>
+
+          <a
+            href="../../developer-notes/architecture/"
+            class="md-footer__link md-footer__link--next"
+            aria-label="Next: Architecture"
+            rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction"> Next </span>
+              <div class="md-ellipsis">Architecture</div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z" />
+              </svg>
+            </div>
+          </a>
+        </nav>
+
+        <div class="md-footer-meta md-typeset">
+          <div class="md-footer-meta__inner md-grid">
+            <div class="md-copyright">
+              <div class="md-copyright__highlight">Copyright (c) 2023-present ZetsuBouKyo and other contributors</div>
+
+              Made with
+              <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+                Material for MkDocs
+              </a>
+            </div>
+
+            <div class="md-social">
+              <a
+                href="https://github.com/ZetsuBouKyo/ZetsuBou"
+                target="_blank"
+                rel="noopener"
+                title="github.com"
+                class="md-social__link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.-->
+                  <path
+                    d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" />
+                </svg>
+              </a>
+
+              <a
+                href="https://www.twitch.tv/zetsuboukyo"
+                target="_blank"
+                rel="noopener"
+                title="www.twitch.tv"
+                class="md-social__link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.-->
+                  <path
+                    d="M391.17 103.47h-38.63v109.7h38.63ZM285 103h-38.63v109.75H285ZM120.83 0 24.31 91.42v329.16h115.83V512l96.53-91.42h77.25L487.69 256V0Zm328.24 237.75-77.22 73.12h-77.24l-67.6 64v-64h-86.87V36.58h308.93Z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+    <script id="__config" type="application/json">
+      {
+        "base": "../..",
+        "features": [
+          "content.action.edit",
+          "content.action.view",
+          "content.code.copy",
+          "navigation.footer",
+          "navigation.tabs"
+        ],
+        "search": "../../assets/javascripts/workers/search.dfff1995.min.js",
+        "translations": {
+          "clipboard.copied": "Copied to clipboard",
+          "clipboard.copy": "Copy to clipboard",
+          "search.result.more.one": "1 more on this page",
+          "search.result.more.other": "# more on this page",
+          "search.result.none": "No matching documents",
+          "search.result.one": "1 matching document",
+          "search.result.other": "# matching documents",
+          "search.result.placeholder": "Type to start searching",
+          "search.result.term.missing": "Missing",
+          "select.version": "Select version"
+        }
+      }
+    </script>
+
+    <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
+
+    <script src="/docs/statics/termynal.js"></script>
+
+    <script src="/docs/statics/custom.js"></script>
+  </body>
+</html>
